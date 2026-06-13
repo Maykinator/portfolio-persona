@@ -124,6 +124,10 @@ const activate = (idx) => {
         }
         .p3-row.active .p3-glow { opacity: 1; }
 
+        *:focus, *:focus-visible {
+        outline: none !important;
+        }
+
         .p3-skew-wrap {
           position: relative;
           display: flex;
