@@ -81,20 +81,16 @@ export default function AboutMe() {
     setRevealed(true);
   };
 
-// 1. Som de entrada e montagem visual
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 60);
     return () => clearTimeout(t);
   }, []);
 
-  // 2. Teclado e navegação
   useEffect(() => {
     const onKey = (e) => {
-      // Usa a função gerente para mudar a opção tocando o som de movimento
       if (e.key === "ArrowUp") handleActivate(Math.max(0, active - 1));
       if (e.key === "ArrowDown") handleActivate(Math.min(ITEMS.length - 1, active + 1));
       
-      // O Enter e a seta direita revelam o conteúdo e tocam a confirmação especial!
       if (e.key === "Enter" || e.key === "ArrowRight") {
         if (!revealed) {
           playConfirmDetail();
@@ -102,13 +98,12 @@ export default function AboutMe() {
         }
       }
       
-      // Controles de Voltar
       if (e.key === "ArrowLeft") {
         if (revealed) {
           setRevealed(false);
-          playConfirm(); // Som ao fechar o painel
+          playConfirm(); 
         } else {
-          playConfirm(); // Som ao sair da página inteira
+          playConfirm(); 
           navigate(-1);
         }
       }
@@ -125,8 +120,16 @@ export default function AboutMe() {
   return (
     <div id="menu-screen">
       <video src={bgVideo} autoPlay loop muted playsInline />
-      {revealed && <div key={`dim-${active}`} className="sc-dim" />}
-      {revealed && (
+{revealed && (
+        <div 
+          key={`dim-${active}`} 
+          className="sc-dim" 
+          onClick={() => {
+            setRevealed(false);
+            playConfirm(); 
+          }} 
+        />
+      )}      {revealed && (
         <div key={`panel-${active}`} className={`sc-reveal-panel${mounted ? " mounted" : ""}`}>
           <div className="sc-reveal-upper-bar">
             {REVEAL_CONTENT[active].upper.map((line) => (
@@ -782,7 +785,7 @@ export default function AboutMe() {
               handleBarClick(i);
             }}
             onMouseEnter={() => {
-              handleActivate(i); // Agora o mouse faz o barulhinho de hover!
+              handleActivate(i); 
             }}
           >
             <div className="sc-bar-red" />
