@@ -31,7 +31,7 @@ const REVEAL_CONTENT = [
   {
     upper: [
       "Gosto de estudar musica, com foco em guitarra e violão.",
-      "Como o design deste portifólio entraga, gosto de explorar estéticas de jogos.",
+      "Como o design deste portifólio demonstra, gosto de explorar estéticas de jogos.",
       "Sou um grande apreciador de jogos com narrativa e direções de arte fortes",
     ],
     lower: "hobbies ajudam na criatividade.",
