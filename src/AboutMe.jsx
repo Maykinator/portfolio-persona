@@ -66,17 +66,16 @@ export default function AboutMe() {
   const isMobileViewport =
     typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches;
 
- const handleBarClick = (index) => {
+const handleBarClick = (index) => {
     if (isMobileViewport) {
       if (active === index) {
         setRevealed((prev) => !prev);
       } else {
         setActive(index);
-        setRevealed(false);
+        setRevealed(true);
       }
       return;
     }
-
     setActive(index);
     setRevealed(true);
   };
