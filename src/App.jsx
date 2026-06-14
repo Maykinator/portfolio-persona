@@ -15,6 +15,7 @@ import Socials from './Socials'
 import AboutMe from './AboutMe'
 import './App.css'
 
+const ALL_VIDEOS = [menuVideo, main1, main2, main3];
 
 function MenuScreen() {
   const navigate = useNavigate()
@@ -49,8 +50,23 @@ function AnimatedRoutes() {
 }
 
 export default function App() {
-  const [hasStarted, setHasStarted] = useState(false);
-  
+  const [loadedCount, setLoadedCount] = useState(0);
+  const [isFullyLoaded, setIsFullyLoaded] = useState(false);
+    const [hasStarted, setHasStarted] = useState(false);
+
+  useEffect(() => {
+    if (loadedCount >= ALL_VIDEOS.length) {
+      setIsFullyLoaded(true);
+    }
+  }, [loadedCount]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsFullyLoaded(true);
+    }, 8000); 
+    return () => clearTimeout(timeout);
+  }, []);
+
   useEffect(() => {
     if (hasStarted) {
       startBGM();
@@ -58,31 +74,60 @@ export default function App() {
   }, [hasStarted]);
 
   useEffect(() => {
-    if (!hasStarted) {
+    if (isFullyLoaded && !hasStarted) {
       const handleStartKey = (e) => {
         if (e.key === 'Enter' || e.key === ' ') { 
           setHasStarted(true);
         }
       };
-      
       window.addEventListener('keydown', handleStartKey);
-      
-      return () => {
-        window.removeEventListener('keydown', handleStartKey);
-      };
+      return () => window.removeEventListener('keydown', handleStartKey);
     }
-  }, [hasStarted]);
+  }, [isFullyLoaded, hasStarted]);
+
+
+  if (!isFullyLoaded) {
+    return (
+      <div style={{
+        position: 'fixed', inset: 0, background: '#04060f', zIndex: 99999,
+        display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-end', padding: '40px'
+      }}>
+        <div style={{
+          fontFamily: 'Anton, sans-serif', fontSize: '32px', color: '#fff',
+          letterSpacing: '4px', animation: 'p3-loading-pulse 1s infinite'
+        }}>
+          NOW LOADING... {Math.round((loadedCount / ALL_VIDEOS.length) * 100)}%
+        </div>
+
+        <style>{`
+          @keyframes p3-loading-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        `}</style>
+
+        {ALL_VIDEOS.map((src, index) => (
+          <video
+            key={index}
+            src={src}
+            preload="auto"
+            muted
+            playsInline
+            onCanPlayThrough={() => setLoadedCount((prev) => prev + 1)}
+            style={{ display: 'none' }}
+          />
+        ))}
+      </div>
+    );
+  }
 
   if (!hasStarted) {
     return (
-<div 
+      <div 
         id="menu-screen"
         style={{ cursor: 'pointer' }}
         onClick={() => setHasStarted(true)}
       >
         <video src={menuVideo} autoPlay loop muted playsInline />
         
-  <div style={{
+        <div style={{
           position: 'absolute',
           inset: 0,
           display: 'flex',
@@ -111,7 +156,7 @@ export default function App() {
           /* Estilo para Celular (Telas menores que 768px) */
           @media (max-width: 768px) {
             .p3-start-text {
-              font-size: 32px; /* Deixa o texto bem menor */
+              font-size: 32px; 
               letter-spacing: 4px;
             }
           }
@@ -122,7 +167,8 @@ export default function App() {
           }
         `}</style>
       </div>
-  )};
+    );
+  }
 
-  return <AnimatedRoutes />
+  return <AnimatedRoutes />;
 }
