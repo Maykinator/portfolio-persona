@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { playEnter, playMove, playConfirm, playConfirmDetail } from "./soundManager";
 import char1 from "./assets/char1.png";
@@ -70,8 +70,6 @@ export default function Socials() {
   const [activeInfoBar, setActiveInfoBar] = useState(0);
   const [focus, setFocus]                 = useState("left");
   const [showDesc, setShowDesc]           = useState(null); 
-  const holdTimer = useRef(null);
-  const isLongPress = useRef(false);
   const navigate = useNavigate();
 
   const handleActivateMain = (newIndex) => {
@@ -455,9 +453,9 @@ export default function Socials() {
           flex-direction: column;
           gap: 6px;
           padding: 8px 8px 8px 0;
-          overflow-y: auto; /* Alterado para criar barra de rolagem se precisar */
+          overflow-y: auto; 
           overflow-x: hidden;
-          pointer-events: none;
+          pointer-events: auto; /* <-- MUDADO: Permite que você faça scroll com o dedo na lista! */
         }
 
         @keyframes sc-infobar-in {
@@ -470,7 +468,8 @@ export default function Socials() {
           position: relative;
           display: flex;
           flex-direction: column;
-          flex-shrink: 0; /* Impede que as abas sejam espremidas */
+          height: auto !important; /* <-- ABSOLUTAMENTE FORÇADO: A caixa agora cresce junto! */
+          min-height: max-content;
           width: 100%;
           background: transparent;
           pointer-events: all;
@@ -587,7 +586,7 @@ export default function Socials() {
         }
         
         .sc-info-desc.show {
-          max-height: 250px; /* Aumentado para garantir espaço no celular */
+          max-height: 250px; 
           opacity: 1;
           padding: 8px 12px;
           margin-top: 4px;
@@ -646,7 +645,7 @@ export default function Socials() {
             bottom: 58px;
             gap: 4px;
             padding: 4px 0;
-            overflow-y: auto; /* Permite rolar os projetos no celular se a lista for longa */
+            overflow-y: auto; 
           }
 
           .sc-info-bar {
@@ -755,29 +754,28 @@ export default function Socials() {
               key={`bar-${active}-${i}`}
               style={{ animationDelay: `${i * 50}ms` }}
               
-              onTouchStart={() => {
-                isLongPress.current = false; 
-                holdTimer.current = setTimeout(() => {
-                  isLongPress.current = true; 
-                  setShowDesc(i); 
-                }, 500); 
-              }}
-              onTouchEnd={() => {
-                clearTimeout(holdTimer.current);
-                setTimeout(() => setShowDesc(null), 1000); 
-              }}
-              onTouchMove={() => {
-                clearTimeout(holdTimer.current); 
-              }}
-              onClick={(e) => {
-                if (isLongPress.current) {
-                  e.preventDefault();
-                  isLongPress.current = false;
-                  return; 
+              onClick={() => {
+                const targetUrl = ITEMS[active].projectUrls[i];
+                
+                // LÓGICA MOBILE 100% CORRIGIDA
+                if (isMobileViewport) {
+                  // Primeiro clique: Expande a sanfona
+                  if (showDesc !== i) {
+                    playMove();
+                    handleActivateSub(i);
+                    setShowDesc(i);
+                    return; 
+                  } 
+                  // Segundo clique: Vai para o projeto
+                  else {
+                    playConfirm();
+                    if(targetUrl !== "#") window.open("https://" + targetUrl, "_blank");
+                    return;
+                  }
                 }
                 
-                const targetUrl = ITEMS[active].projectUrls[i];
-                if (isMobileViewport || activeInfoBar === i) {
+                // LÓGICA COMPUTADOR (Mantida igual)
+                if (activeInfoBar === i) {
                   playConfirm();
                   if(targetUrl !== "#") window.open("https://" + targetUrl, "_blank");
                   return;
@@ -785,6 +783,7 @@ export default function Socials() {
                 handleActivateSub(i);
                 setFocus("right"); 
               }}
+
               onMouseEnter={() => {
                 if (focus === "left") setFocus("right"); 
                 handleActivateSub(i);
