@@ -8,13 +8,12 @@ import main1 from './assets/main1.mp4'
 import main2 from './assets/main2.mp4'
 import main3 from './assets/main3.mp4'
 
-// --- 1. IMPORTE SEUS ÁUDIOS AQUI ---
-// ATENÇÃO: Troque os nomes abaixo pelos nomes reais dos arquivos 
-// que estão na sua pasta assets (ex: .mp3, .wav)
-import bgm from './assets/bgm.mp3' 
-import sfxMove from './assets/move.mp3' 
-import sfxConfirm from './assets/confirm.mp3' 
-// -----------------------------------
+
+import bgm from './assets/sounds/bgm.mp3' 
+import sfxMove from './assets/sounds/move.wav' 
+import sfxEnter from './assets/sounds/enter.wav' 
+import sfxConfirm from './assets/sounds/confirm.wav' 
+import sfxConfirmDetail from './assets/sounds/confirm_detail.wav'
 
 import P3Menu from './P3Menu'
 import VideoPage from './VideoPage'
@@ -24,11 +23,9 @@ import Socials from './Socials'
 import AboutMe from './AboutMe'
 import './App.css'
 
-// 2. LISTAS DE ARQUIVOS
 const ALL_VIDEOS = [menuVideo, main1, main2, main3];
-const ALL_AUDIO = [bgm, sfxMove, sfxConfirm]; // Adicione as variáveis de áudio aqui
+const ALL_AUDIO = [bgm, sfxMove, sfxConfirm]; 
 
-// 3. TOTAL DE ARQUIVOS A CARREGAR (Vídeos + Áudios)
 const TOTAL_ASSETS = ALL_VIDEOS.length + ALL_AUDIO.length;
 
 function MenuScreen() {
@@ -69,7 +66,6 @@ export default function App() {
   const [hasStarted, setHasStarted] = useState(false);
 
   useEffect(() => {
-    // Agora ele espera carregar TUDO (Vídeos + Áudio)
     if (loadedCount >= TOTAL_ASSETS) {
       setIsFullyLoaded(true);
     }
@@ -111,7 +107,7 @@ export default function App() {
           fontFamily: 'Anton, sans-serif', fontSize: '32px', color: '#fff',
           letterSpacing: '4px', animation: 'p3-loading-pulse 1s infinite'
         }}>
-          {/* A matemática da porcentagem agora usa o TOTAL_ASSETS */}
+          {/* A matemática da porcentagem */}
           NOW LOADING... {Math.round((loadedCount / TOTAL_ASSETS) * 100)}%
         </div>
 
