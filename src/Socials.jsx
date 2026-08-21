@@ -509,15 +509,23 @@ export default function Socials() {
           border-radius: 7px;
         }
 
-        /* AJUSTE DO ÍCONE NEW: Tamanho em PIXELS fixos, e não mais % */
+        /* NOVA ANIMAÇÃO DE PULSAÇÃO (EFEITO RESPIRAÇÃO) */
+        @keyframes sc-pulse-new {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.15); }
+        }
+
+        /* ÍCONE NEW COM ANIMAÇÃO ADICIONADA */
         .sc-info-bar-new {
           position: absolute;
           left: -40px;
           top: 8px; 
-          height: 28px; /* <-- Agora tem um tamanho cravado no computador */
+          height: 28px; 
           width: auto;
           pointer-events: none;
           z-index: 3;
+          transform-origin: center center;
+          animation: sc-pulse-new 1.2s infinite ease-in-out; /* <-- Animação aplicada aqui */
         }
 
         .sc-info-bar-wrap.selected .sc-info-bar::before {
@@ -654,11 +662,10 @@ export default function Socials() {
             overflow-y: auto; 
           }
 
-          /* AJUSTE DO ÍCONE NEW NO CELULAR: Fixado em pixels também */
           .sc-info-bar-new {
             left: -32px; 
             top: 7px;
-            height: 24px; /* <-- Travado nos 24px no celular */
+            height: 24px; 
           }
 
           .sc-info-bar {
