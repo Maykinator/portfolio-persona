@@ -455,8 +455,8 @@ export default function Socials() {
           flex-direction: column;
           gap: 6px;
           padding: 8px 8px 8px 0;
-          overflow-y: visible; 
-          overflow-x: visible;
+          overflow-y: auto; /* Alterado para criar barra de rolagem se precisar */
+          overflow-x: hidden;
           pointer-events: none;
         }
 
@@ -470,6 +470,7 @@ export default function Socials() {
           position: relative;
           display: flex;
           flex-direction: column;
+          flex-shrink: 0; /* Impede que as abas sejam espremidas */
           width: 100%;
           background: transparent;
           pointer-events: all;
@@ -508,8 +509,7 @@ export default function Socials() {
         .sc-info-bar-new {
           position: absolute;
           left: -40px;
-          /* --- ALTERAÇÃO AQUI --- */
-          top: 8px; /* Fixado no topo para não descer com a descrição */
+          top: 8px; 
           height: 65%;
           width: auto;
           pointer-events: none;
@@ -587,7 +587,7 @@ export default function Socials() {
         }
         
         .sc-info-desc.show {
-          max-height: 100px;
+          max-height: 250px; /* Aumentado para garantir espaço no celular */
           opacity: 1;
           padding: 8px 12px;
           margin-top: 4px;
@@ -646,6 +646,7 @@ export default function Socials() {
             bottom: 58px;
             gap: 4px;
             padding: 4px 0;
+            overflow-y: auto; /* Permite rolar os projetos no celular se a lista for longa */
           }
 
           .sc-info-bar {
