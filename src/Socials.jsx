@@ -466,7 +466,6 @@ export default function Socials() {
           100% { opacity: 1; transform: translateX(0); }
         }
         
-        /* Modificado: A wrapper agora é flex para empilhar a barra e a descrição e crescer naturalmente */
         .sc-info-bar-wrap {
           position: relative;
           display: flex;
@@ -491,7 +490,6 @@ export default function Socials() {
           border-radius: 8px;
         }
         
-        /* Modificado: A altura fixa que era do Wrapper agora fica apenas na Barra visual */
         .sc-info-bar {
           position: relative;
           width: 100%;
@@ -510,7 +508,8 @@ export default function Socials() {
         .sc-info-bar-new {
           position: absolute;
           left: -40px;
-          bottom: 0;
+          /* --- ALTERAÇÃO AQUI --- */
+          top: 8px; /* Fixado no topo para não descer com a descrição */
           height: 65%;
           width: auto;
           pointer-events: none;
@@ -569,7 +568,6 @@ export default function Socials() {
           user-select: none;
         }
 
-        /* ── Estilo do Balão de Descrição (Efeito Sanfona) ── */
         .sc-info-desc {
           background: rgba(10, 10, 10, 0.95);
           color: #fff;
@@ -579,8 +577,6 @@ export default function Socials() {
           line-height: 1.3;
           border-left: 4px solid #c4001a;
           border-radius: 4px;
-          
-          /* Escondendo no fluxo em vez de usar position absolute */
           max-height: 0;
           opacity: 0;
           overflow: hidden;
@@ -652,7 +648,6 @@ export default function Socials() {
             padding: 4px 0;
           }
 
-          /* Modificado: A altura do mobile passou da Wrapper para a Barra! */
           .sc-info-bar {
             height: 38px !important;
           }
@@ -808,7 +803,6 @@ export default function Socials() {
                 <span className="sc-info-bar-count">{ITEMS[active].counts[i]}</span>
               </div>
 
-              {/* A caixa flutuante da descrição! */}
               <div className={`sc-info-desc ${showDesc === i ? "show" : ""}`}>
                 {ITEMS[active].projectDescriptions[i]}
               </div>
