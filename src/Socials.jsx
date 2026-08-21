@@ -35,7 +35,7 @@ const ITEMS = [
     ],
   },
   {
-    id: "video", label: "VIDEO", handle: "Edição e Mixagem", href: "#", icon: "🎬", barIcon: icon2, bars: 2, newBars: [0], 
+    id: "video", label: "VIDEO", handle: "Edição e Mixagem", href: "#", icon: "🎬", barIcon: icon2, bars: 2, newBars: [1], 
     counts: ["Workana", "Local"],
     projectNames: ["Edição de Vídeos", "Suporte e Mixagem"],
     projectUrls: ["#", "#"],
@@ -107,7 +107,6 @@ export default function Socials() {
         if (e.key === "ArrowRight") { 
           playConfirm();
           setFocus("right"); 
-          // Ao entrar na área direita com a seta, já foca o primeiro item e abre a descrição
           handleActivateSub(0); 
         }
         if (e.key === "Enter") {
@@ -509,15 +508,18 @@ export default function Socials() {
           background: #fff;
           border-radius: 7px;
         }
+
+        /* AJUSTE DO ÍCONE NEW: Tamanho em PIXELS fixos, e não mais % */
         .sc-info-bar-new {
           position: absolute;
           left: -40px;
           top: 8px; 
-          height: 65%;
+          height: 28px; /* <-- Agora tem um tamanho cravado no computador */
           width: auto;
           pointer-events: none;
           z-index: 3;
         }
+
         .sc-info-bar-wrap.selected .sc-info-bar::before {
           content: '';
           position: absolute;
@@ -652,10 +654,11 @@ export default function Socials() {
             overflow-y: auto; 
           }
 
+          /* AJUSTE DO ÍCONE NEW NO CELULAR: Fixado em pixels também */
           .sc-info-bar-new {
-            left: -34px; 
-            top: 4px;
-            height: 70%;
+            left: -32px; 
+            top: 7px;
+            height: 24px; /* <-- Travado nos 24px no celular */
           }
 
           .sc-info-bar {
