@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { playEnter, playMove, playConfirm, playConfirmDetail } from "./soundManager";
 import char1 from "./assets/char1.png";
@@ -9,7 +9,6 @@ import newsign from "./assets/newsign.png";
 import icon1 from "./assets/icon1.png";
 import icon2 from "./assets/icon2.png";
 import icon3 from "./assets/icon3.png";
-
 
 const CHARS = [char1, char2, char3];
 
@@ -24,7 +23,12 @@ const ITEMS = [
     id: "programming", label: "TI & DEV", handle: "Back-end & Web", href: "https://github.com/Maykinator", icon: "💻", barIcon: icon1, bars: 3, newBars: [0], 
     counts: ["V1.0", "Ativo", "Beta"], 
     projectNames: ["Sistema Ache Aqui", "PantanalTEC (Dev)", "Portfólio Persona (React)"],
-    projectUrls: ["github.com/Maykinator", "github.com/Maykinator", "github.com/Maykinator"], // Coloque os links reais aqui depois
+    projectUrls: ["github.com/Maykinator", "github.com/Maykinator", "github.com/Maykinator"],
+    projectDescriptions: [
+      "Sistema web centralizado desenvolvido com Laravel e PostgreSQL.",
+      "Atuação como desenvolvedor front-end e integrações na empresa júnior.",
+      "Portfólio interativo construído com React, Vite e Framer Motion."
+    ],
     stats: [
       { tag: "REP", value: "1.2K", color: "#9147ff" },
       { tag: "LVL", value: "042",  color: "#bf94ff" },
@@ -34,7 +38,11 @@ const ITEMS = [
     id: "video", label: "VIDEO", handle: "Edição e Mixagem", href: "#", icon: "🎬", barIcon: icon2, bars: 2, newBars: [1], 
     counts: ["Workana", "Local"],
     projectNames: ["Edição de Vídeos", "Suporte e Mixagem"],
-    projectUrls: ["#", "#"], // Deixe "#" se não tiver link externo
+    projectUrls: ["#", "#"],
+    projectDescriptions: [
+      "Projetos de edição audiovisual e motion graphics para clientes freelance.",
+      "Operação técnica de som e mixagem para eventos presenciais."
+    ],
     stats: [
       { tag: "PRJ", value: "128", color: "#e1306c" },
       { tag: "HRS", value: "3.4K", color: "#f77737" },
@@ -45,17 +53,25 @@ const ITEMS = [
     counts: ["Conceito", "Logo"],
     projectNames: ["Verdant", "Pantanal Tech"],
     projectUrls: ["#", "#"],
+    projectDescriptions: [
+      "Criação de identidade visual e estética para o projeto Verdant.",
+      "Design de materiais e prototipagem de interfaces (UI)."
+    ],
     stats: [
       { tag: "ART", value: "8.9K", color: "#00f2ea" },
       { tag: "UX",  value: "99", color: "#ff0050" },
     ],
   },
 ];
+
 export default function Socials() {
   const [active, setActive]               = useState(0);
   const [mounted, setMounted]             = useState(false);
   const [activeInfoBar, setActiveInfoBar] = useState(0);
   const [focus, setFocus]                 = useState("left");
+  const [showDesc, setShowDesc]           = useState(null); 
+  const holdTimer = useRef(null);
+  const isLongPress = useRef(false);
   const navigate = useNavigate();
 
   const handleActivateMain = (newIndex) => {
@@ -63,6 +79,7 @@ export default function Socials() {
       playMove();
       setActive(newIndex);
       setActiveInfoBar(0); 
+      setShowDesc(null); 
     }
   };
 
@@ -103,6 +120,7 @@ export default function Socials() {
         if (e.key === "ArrowLeft") {
           playConfirm(); 
           setFocus("left");
+          setShowDesc(null); 
         }
         if (e.key === "Enter") {
           playConfirm();
@@ -140,7 +158,6 @@ export default function Socials() {
           padding-left: 0;
         }
 
-        /* ── Each bar ── */
         .sc-bar {
           position: relative;
           width: 45vw;
@@ -154,7 +171,6 @@ export default function Socials() {
           z-index: 1;
         }
 
-        /* wrapper holds both the red underlay and the bar */
         .sc-bar-outer {
           position: relative;
           flex-shrink: 0;
@@ -168,7 +184,6 @@ export default function Socials() {
         .sc-bar-outer:nth-child(2) { transition-delay: 80ms; }
         .sc-bar-outer:nth-child(3) { transition-delay: 160ms; }
 
-        /* red underlay — peeks out below the bar when active */
         .sc-bar-red {
           position: absolute;
           top: 0; left: 0;
@@ -184,7 +199,6 @@ export default function Socials() {
         }
         .sc-bar-outer.active .sc-bar-red { opacity: 1; }
 
-        /* white fill — skewed parallelogram on the right 25% */
         .sc-bar-fill {
           position: absolute;
           inset: 0;
@@ -198,7 +212,6 @@ export default function Socials() {
           clip-path: polygon(22% 0, 100% 0, calc(100% - 14px) 100%, calc(22% + 138px) 100%);
         }
 
-        /* shade on the left edge of the white fill */
         .sc-bar-shade {
           position: absolute;
           top: 0; bottom: 0;
@@ -212,7 +225,6 @@ export default function Socials() {
         }
         .sc-bar-outer.active .sc-bar-shade { opacity: 1; }
 
-        /* bottom shadow line under each bar */
         .sc-bar::after {
           content: '';
           position: absolute;
@@ -223,7 +235,6 @@ export default function Socials() {
           pointer-events: none;
         }
 
-        /* content layout inside each bar */
         .sc-bar-content {
           position: relative;
           z-index: 2;
@@ -234,7 +245,6 @@ export default function Socials() {
           padding: 0 20px 0 20px;
         }
 
-        /* left: role label */
         .sc-role {
           display: flex;
           align-items: center;
@@ -249,7 +259,6 @@ export default function Socials() {
           padding: 0 16px 0 8px;
         }
 
-        /* left: icon + name centered in remaining space */
         .sc-main {
           flex: 1;
           display: flex;
@@ -287,7 +296,6 @@ export default function Socials() {
         }
         .sc-bar-outer.active .sc-label { color: #111111; }
 
-        /* lb/rb nav row */
         @keyframes sc-arrow-left {
           0%, 100% { transform: translateX(0); opacity: 1; }
           50%       { transform: translateX(-5px); opacity: 0.4; }
@@ -314,7 +322,6 @@ export default function Socials() {
         .sc-nav-arrow.left  { animation: sc-arrow-left  0.8s ease-in-out infinite; }
         .sc-nav-arrow.right { animation: sc-arrow-right 0.8s ease-in-out infinite; }
 
-        /* right: stats group */
         .sc-stats {
           display: flex;
           align-items: center;
@@ -375,7 +382,6 @@ export default function Socials() {
           background: #000;
         }
 
-        /* character portrait */
         .sc-char {
           position: absolute;
           top: 0;
@@ -390,7 +396,6 @@ export default function Socials() {
           clip-path: polygon(20px 0%, 100% 0%, calc(100% - 20px) 100%, 0% 100%);
         }
 
-        /* right-side nav bar */
         @keyframes sc-right-nav-pop {
           0%   { opacity: 0; transform: scale(0.55) translateY(-10px); }
           65%  { opacity: 1; transform: scale(1.1) translateY(2px); }
@@ -439,7 +444,6 @@ export default function Socials() {
         .sc-right-nav .sc-nav-arrow.left  { animation: sc-arrow-left  0.8s ease-in-out infinite; }
         .sc-right-nav .sc-nav-arrow.right { animation: sc-arrow-right 0.8s ease-in-out infinite; }
 
-        /* info panel */
         .sc-info-panel {
           position: fixed;
           top: 132px;
@@ -451,8 +455,8 @@ export default function Socials() {
           flex-direction: column;
           gap: 6px;
           padding: 8px 8px 8px 0;
-          overflow-y: auto;
-          overflow-x: hidden;
+          overflow-y: visible; 
+          overflow-x: visible;
           pointer-events: none;
         }
 
@@ -461,12 +465,13 @@ export default function Socials() {
           60%  { opacity: 1; transform: translateX(-4px); }
           100% { opacity: 1; transform: translateX(0); }
         }
+        
+        /* Modificado: A wrapper agora é flex para empilhar a barra e a descrição e crescer naturalmente */
         .sc-info-bar-wrap {
           position: relative;
-          right: auto;
-          left: auto;
+          display: flex;
+          flex-direction: column;
           width: 100%;
-          height: 46px;
           background: transparent;
           pointer-events: all;
           cursor: pointer;
@@ -474,20 +479,30 @@ export default function Socials() {
           padding: 0;
           animation: sc-infobar-in 0.35s cubic-bezier(0.22,1,0.36,1) both;
         }
+        
+        .sc-info-bar-wrap:hover,
+        .sc-info-bar-wrap.selected {
+          z-index: 10;
+        }
+
         .sc-info-bar-wrap.selected {
           background: #111;
           padding: 1.5px;
           border-radius: 8px;
         }
+        
+        /* Modificado: A altura fixa que era do Wrapper agora fica apenas na Barra visual */
         .sc-info-bar {
           position: relative;
           width: 100%;
-          height: 100%;
+          height: 46px;
+          flex-shrink: 0;
           background: transparent;
           display: flex;
           align-items: center;
           overflow: hidden;
         }
+        
         .sc-info-bar-wrap.selected .sc-info-bar {
           background: #fff;
           border-radius: 7px;
@@ -554,7 +569,35 @@ export default function Socials() {
           user-select: none;
         }
 
-        /* footer hints */
+        /* ── Estilo do Balão de Descrição (Efeito Sanfona) ── */
+        .sc-info-desc {
+          background: rgba(10, 10, 10, 0.95);
+          color: #fff;
+          font-family: 'Barlow Condensed', sans-serif;
+          font-size: 16px;
+          letter-spacing: 0.5px;
+          line-height: 1.3;
+          border-left: 4px solid #c4001a;
+          border-radius: 4px;
+          
+          /* Escondendo no fluxo em vez de usar position absolute */
+          max-height: 0;
+          opacity: 0;
+          overflow: hidden;
+          padding: 0 12px;
+          margin-top: 0;
+          margin-bottom: 0;
+          transition: all 0.3s ease-out;
+        }
+        
+        .sc-info-desc.show {
+          max-height: 100px;
+          opacity: 1;
+          padding: 8px 12px;
+          margin-top: 4px;
+          margin-bottom: 4px;
+        }
+
         .sc-footer {
           position: fixed;
           bottom: 20px; right: 28px;
@@ -609,7 +652,8 @@ export default function Socials() {
             padding: 4px 0;
           }
 
-          .sc-info-bar-wrap {
+          /* Modificado: A altura do mobile passou da Wrapper para a Barra! */
+          .sc-info-bar {
             height: 38px !important;
           }
 
@@ -625,6 +669,10 @@ export default function Socials() {
 
           .sc-footer {
             display: none;
+          }
+          
+          .sc-info-desc {
+            font-size: 14px;
           }
 
           .sc-mobile-controls {
@@ -703,14 +751,35 @@ export default function Socials() {
         </div>
       )}
 
-{mounted && (
+      {mounted && (
         <div className="sc-info-panel" key={`panel-${active}`}>
           {Array.from({ length: ITEMS[active].bars }).map((_, i) => (
             <div
               className={`sc-info-bar-wrap${activeInfoBar === i ? " selected" : ""}`}
               key={`bar-${active}-${i}`}
               style={{ animationDelay: `${i * 50}ms` }}
-onClick={() => {
+              
+              onTouchStart={() => {
+                isLongPress.current = false; 
+                holdTimer.current = setTimeout(() => {
+                  isLongPress.current = true; 
+                  setShowDesc(i); 
+                }, 500); 
+              }}
+              onTouchEnd={() => {
+                clearTimeout(holdTimer.current);
+                setTimeout(() => setShowDesc(null), 1000); 
+              }}
+              onTouchMove={() => {
+                clearTimeout(holdTimer.current); 
+              }}
+              onClick={(e) => {
+                if (isLongPress.current) {
+                  e.preventDefault();
+                  isLongPress.current = false;
+                  return; 
+                }
+                
                 const targetUrl = ITEMS[active].projectUrls[i];
                 if (isMobileViewport || activeInfoBar === i) {
                   playConfirm();
@@ -723,6 +792,10 @@ onClick={() => {
               onMouseEnter={() => {
                 if (focus === "left") setFocus("right"); 
                 handleActivateSub(i);
+                if (!isMobileViewport) setShowDesc(i); 
+              }}
+              onMouseLeave={() => {
+                if (!isMobileViewport) setShowDesc(null); 
               }}
             >
               {ITEMS[active].newBars.includes(i) && (
@@ -730,12 +803,16 @@ onClick={() => {
               )}
               <div className="sc-info-bar">
                 <img className="sc-info-bar-icon" src={ITEMS[active].barIcon} alt="" />
-                
                 <span className="sc-info-bar-text">{ITEMS[active].projectNames[i]}</span>
-                
                 <span className="sc-info-bar-box">STATUS</span>
                 <span className="sc-info-bar-count">{ITEMS[active].counts[i]}</span>
               </div>
+
+              {/* A caixa flutuante da descrição! */}
+              <div className={`sc-info-desc ${showDesc === i ? "show" : ""}`}>
+                {ITEMS[active].projectDescriptions[i]}
+              </div>
+
             </div>
           ))}
         </div>
