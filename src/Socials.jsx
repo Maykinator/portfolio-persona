@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { playEnter, playMove, playConfirm, playConfirmDetail } from "./soundManager";
 import char1 from "./assets/char1.png";
@@ -35,7 +35,7 @@ const ITEMS = [
     ],
   },
   {
-    id: "video", label: "VIDEO", handle: "Edição e Mixagem", href: "#", icon: "🎬", barIcon: icon2, bars: 2, newBars: [1], 
+    id: "video", label: "VIDEO", handle: "Edição e Mixagem", href: "#", icon: "🎬", barIcon: icon2, bars: 2, newBars: [0], 
     counts: ["Workana", "Local"],
     projectNames: ["Edição de Vídeos", "Suporte e Mixagem"],
     projectUrls: ["#", "#"],
@@ -72,6 +72,9 @@ export default function Socials() {
   const [showDesc, setShowDesc]           = useState(null); 
   const navigate = useNavigate();
 
+  const isMobileViewport =
+    typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches;
+
   const handleActivateMain = (newIndex) => {
     if (active !== newIndex) {
       playMove();
@@ -86,10 +89,10 @@ export default function Socials() {
       playMove();
       setActiveInfoBar(newIndex);
     }
+    if (!isMobileViewport) {
+      setShowDesc(newIndex);
+    }
   };
-
-  const isMobileViewport =
-    typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches;
 
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 60);
@@ -104,7 +107,8 @@ export default function Socials() {
         if (e.key === "ArrowRight") { 
           playConfirm();
           setFocus("right"); 
-          setActiveInfoBar(0); 
+          // Ao entrar na área direita com a seta, já foca o primeiro item e abre a descrição
+          handleActivateSub(0); 
         }
         if (e.key === "Enter") {
           playConfirm();
@@ -135,7 +139,7 @@ export default function Socials() {
     
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [active, activeInfoBar, focus, navigate]);
+  }, [active, activeInfoBar, focus, navigate, isMobileViewport]);
 
   return (
     <div id="menu-screen">
@@ -446,16 +450,16 @@ export default function Socials() {
           position: fixed;
           top: 132px;
           right: 0;
-          left: 65%;
+          left: calc(65% - 45px); 
           bottom: 84px;
           z-index: 50;
           display: flex;
           flex-direction: column;
           gap: 6px;
-          padding: 8px 8px 8px 0;
+          padding: 8px 8px 8px 45px; 
           overflow-y: auto; 
           overflow-x: hidden;
-          pointer-events: auto; /* <-- MUDADO: Permite que você faça scroll com o dedo na lista! */
+          pointer-events: auto; 
         }
 
         @keyframes sc-infobar-in {
@@ -468,7 +472,7 @@ export default function Socials() {
           position: relative;
           display: flex;
           flex-direction: column;
-          height: auto !important; /* <-- ABSOLUTAMENTE FORÇADO: A caixa agora cresce junto! */
+          height: auto !important; 
           min-height: max-content;
           width: 100%;
           background: transparent;
@@ -640,12 +644,18 @@ export default function Socials() {
 
           .sc-info-panel {
             top: min(47vh, 320px);
-            left: 8px;
+            left: 0px; 
             right: 8px;
             bottom: 58px;
             gap: 4px;
-            padding: 4px 0;
+            padding: 4px 0 4px 38px; 
             overflow-y: auto; 
+          }
+
+          .sc-info-bar-new {
+            left: -34px; 
+            top: 4px;
+            height: 70%;
           }
 
           .sc-info-bar {
@@ -757,16 +767,13 @@ export default function Socials() {
               onClick={() => {
                 const targetUrl = ITEMS[active].projectUrls[i];
                 
-                // LÓGICA MOBILE 100% CORRIGIDA
                 if (isMobileViewport) {
-                  // Primeiro clique: Expande a sanfona
                   if (showDesc !== i) {
                     playMove();
                     handleActivateSub(i);
                     setShowDesc(i);
                     return; 
                   } 
-                  // Segundo clique: Vai para o projeto
                   else {
                     playConfirm();
                     if(targetUrl !== "#") window.open("https://" + targetUrl, "_blank");
@@ -774,7 +781,6 @@ export default function Socials() {
                   }
                 }
                 
-                // LÓGICA COMPUTADOR (Mantida igual)
                 if (activeInfoBar === i) {
                   playConfirm();
                   if(targetUrl !== "#") window.open("https://" + targetUrl, "_blank");
@@ -787,7 +793,6 @@ export default function Socials() {
               onMouseEnter={() => {
                 if (focus === "left") setFocus("right"); 
                 handleActivateSub(i);
-                if (!isMobileViewport) setShowDesc(i); 
               }}
               onMouseLeave={() => {
                 if (!isMobileViewport) setShowDesc(null); 
