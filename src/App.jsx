@@ -7,6 +7,12 @@ import menuVideo from './assets/Mainn.mp4'
 import main1 from './assets/main1.mp4'
 import main2 from './assets/main2.mp4'
 import main3 from './assets/main3.mp4'
+
+
+import bgm from './assets/bgm.mp3' 
+import sfxMove from './assets/move.mp3' 
+import sfxConfirm from './assets/confirm.mp3' 
+
 import P3Menu from './P3Menu'
 import VideoPage from './VideoPage'
 import ResumePage from './ResumePage'
@@ -16,6 +22,9 @@ import AboutMe from './AboutMe'
 import './App.css'
 
 const ALL_VIDEOS = [menuVideo, main1, main2, main3];
+const ALL_AUDIO = [bgm, sfxMove, sfxConfirm]; 
+
+const TOTAL_ASSETS = ALL_VIDEOS.length + ALL_AUDIO.length;
 
 function MenuScreen() {
   const navigate = useNavigate()
@@ -52,10 +61,10 @@ function AnimatedRoutes() {
 export default function App() {
   const [loadedCount, setLoadedCount] = useState(0);
   const [isFullyLoaded, setIsFullyLoaded] = useState(false);
-    const [hasStarted, setHasStarted] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
 
   useEffect(() => {
-    if (loadedCount >= ALL_VIDEOS.length) {
+    if (loadedCount >= TOTAL_ASSETS) {
       setIsFullyLoaded(true);
     }
   }, [loadedCount]);
@@ -96,16 +105,18 @@ export default function App() {
           fontFamily: 'Anton, sans-serif', fontSize: '32px', color: '#fff',
           letterSpacing: '4px', animation: 'p3-loading-pulse 1s infinite'
         }}>
-          NOW LOADING... {Math.round((loadedCount / ALL_VIDEOS.length) * 100)}%
+          {/* A matemática da porcentagem */}
+          NOW LOADING... {Math.round((loadedCount / TOTAL_ASSETS) * 100)}%
         </div>
 
         <style>{`
           @keyframes p3-loading-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
         `}</style>
 
+        {/* Pré-carregador de VÍDEOS */}
         {ALL_VIDEOS.map((src, index) => (
           <video
-            key={index}
+            key={`video-${index}`}
             src={src}
             preload="auto"
             muted
@@ -114,6 +125,18 @@ export default function App() {
             style={{ display: 'none' }}
           />
         ))}
+
+        {/* Pré-carregador de ÁUDIOS */}
+        {ALL_AUDIO.map((src, index) => (
+          <audio
+            key={`audio-${index}`}
+            src={src}
+            preload="auto"
+            onCanPlayThrough={() => setLoadedCount((prev) => prev + 1)}
+            style={{ display: 'none' }}
+          />
+        ))}
+
       </div>
     );
   }

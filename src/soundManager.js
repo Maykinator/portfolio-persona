@@ -21,8 +21,7 @@ export const startBGM = () => {
       console.log("✅ Música de fundo rodando!");
       isBgmPlaying = true;
     }).catch((erro) => {
-      // Se o navegador bloquear, ele não muda a variável isBgmPlaying.
-      // Assim, no próximo clique, ele tenta de novo!
+      
       console.warn("Navegador aguardando mais interação para liberar o áudio...");
     });
   }
