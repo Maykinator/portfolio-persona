@@ -35,7 +35,7 @@ const ITEMS = [
     ],
   },
   {
-    id: "video", label: "VIDEO", handle: "Edição e Mixagem", href: "#", icon: "🎬", barIcon: icon2, bars: 2, newBars: [1], 
+    id: "video", label: "VIDEO", handle: "Edição e Mixagem", href: "#", icon: "🎬", barIcon: icon2, bars: 2, newBars: [0], 
     counts: ["Workana", "Local"],
     projectNames: ["Edição de Vídeos", "Suporte e Mixagem"],
     projectUrls: ["#", "#"],
