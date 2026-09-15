@@ -20,13 +20,12 @@ const ROLES = [
 
 const ITEMS = [
   {
-    id: "programming", label: "TI & DEV", handle: "Back-end & Web", href: "https://github.com/Maykinator", icon: "💻", barIcon: icon1, bars: 3, newBars: [0], 
+    id: "programming", label: "TI & DEV", handle: "Back-end & Web", href: "https://github.com/Maykinator", icon: "💻", barIcon: icon1, bars: 2, newBars: [0], 
     counts: ["V1.0", "Ativo", "Beta"], 
-    projectNames: ["Sistema Ache Aqui", "PantanalTEC (Dev)", "Portfólio Persona (React)"],
-    projectUrls: ["github.com/Maykinator", "github.com/Maykinator", "github.com/Maykinator"],
+    projectNames: ["Sistema controle de gastos", "Portfólio Persona (React)"],
+    projectUrls: ["https://app-financeiro-gold-two.vercel.app/", "https://portfolio-persona-six.vercel.app/"],
     projectDescriptions: [
-      "Sistema web centralizado desenvolvido com Laravel e PostgreSQL.",
-      "Atuação como desenvolvedor front-end e integrações na empresa júnior.",
+      "Sistema web centralizado desenvolvido com React e PostgreSQL, unindo front e back.",
       "Portfólio interativo construído com React, Vite e Framer Motion."
     ],
     stats: [
