@@ -23,7 +23,7 @@ const ITEMS = [
     id: "programming", label: "TI & DEV", handle: "Back-end & Web", href: "https://github.com/Maykinator", icon: "💻", barIcon: icon1, bars: 2, newBars: [0], 
     counts: ["V1.0", "Ativo", "Beta"], 
     projectNames: ["Controle de gastos", "Portfólio Persona "],
-    projectUrls: ["https://app-financeiro-gold-two.vercel.app/", "https://portfolio-persona-six.vercel.app/"],
+    projectUrls: ["app-financeiro-gold-two.vercel.app/", "portfolio-persona-six.vercel.app/"],
     projectDescriptions: [
       "Sistema web centralizado desenvolvido com React e PostgreSQL, unindo front e back.",
       "Portfólio interativo construído com React, Vite e Framer Motion."
