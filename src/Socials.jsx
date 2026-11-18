@@ -20,11 +20,13 @@ const ROLES = [
 
 const ITEMS = [
   {
-    id: "programming", label: "TI & DEV", handle: "Back-end & Web", href: "https://github.com/Maykinator", icon: "💻", barIcon: icon1, bars: 2, newBars: [0], 
+    id: "programming", label: "TI & DEV", handle: "Back-end & Web", href: "https://github.com/Maykinator", icon: "💻", barIcon: icon1, bars: 4, newBars: [0], 
     counts: ["V1.0", "Ativo", "Beta"], 
-    projectNames: ["Controle Finanças", "Portfólio"],
-    projectUrls: ["app-financeiro-gold-two.vercel.app/", "portfolio-persona-six.vercel.app/"],
+    projectNames: ["Padaria Saraiva", "Shiba Achadinhos", "Controle Finanças", "Portfólio"],
+    projectUrls: ["padaria-saraiva.dev-br.workers.dev/", "shiba-achadinhos.dev-br.workers.dev/","app-financeiro-gold-two.vercel.app/", "portfolio-persona-six.vercel.app/"],
     projectDescriptions: [
+      "Site estático em arquitetura MVC (JavaScript ES Modules, sem build, sem dependências).",
+      "Site de Promoções (HTML + CSS + JS puro) com MVC",
       "Sistema web centralizado desenvolvido com React e PostgreSQL, unindo front e back.",
       "Portfólio interativo construído com React, Vite e Framer Motion."
     ],
