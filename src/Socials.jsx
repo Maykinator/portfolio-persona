@@ -21,7 +21,7 @@ const ROLES = [
 const ITEMS = [
   {
     id: "programming", label: "TI & DEV", handle: "Back-end & Web", href: "https://github.com/Maykinator", icon: "💻", barIcon: icon1, bars: 4, newBars: [0], 
-    counts: ["V1.0", "Ativo", "Beta"], 
+    counts: ["V1.0", "Ativo", "Beta", "Ativo"], 
     projectNames: ["Padaria Saraiva", "Shiba Achadinhos", "Controle Finanças", "Portfólio"],
     projectUrls: ["padaria-saraiva.dev-br.workers.dev/", "shiba-achadinhos.dev-br.workers.dev/","app-financeiro-gold-two.vercel.app/", "portfolio-persona-six.vercel.app/"],
     projectDescriptions: [
